@@ -14,7 +14,12 @@ describe FoodsController do
   end
 
   describe 'GET #show' do
-    it "assigns the requested food to @food"
+    it "assigns the requested food to @food" do
+      food = create(:food)
+      get :show, id: food
+      expect(assigns(:food)).to eq food
+    end
+
     it "renders the :show template"
   end
 

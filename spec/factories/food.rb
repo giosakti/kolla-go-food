@@ -1,7 +1,8 @@
 FactoryGirl.define do
   factory :food do
     name { Faker::Food.dish }
-    description { Faker::Food.ingridient }
+    description { Faker::Food.ingredient }
+    image_url "Food.jpg"
     price 10000.0
   end
 
