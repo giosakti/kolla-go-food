@@ -17,3 +17,5 @@
     <td class="total_cell"><%= number_to_currency(total_price, unit: "Rp ", delimiter: ".", separator: ",") %></td>
   </tr>
 </table>
+
+<%= button_to 'Empty cart', @cart, method: :delete, data: { confirm: 'Are you sure?' } %>
