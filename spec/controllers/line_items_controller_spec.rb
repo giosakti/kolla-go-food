@@ -56,9 +56,9 @@ describe LineItemsController do
       end
     end
 
-    it "redirects to carts#show" do
+    it "redirects to store#index" do
       post :create, params: { food_id: @food.id }
-      expect(response).to redirect_to(cart_path(assigns(:line_item).cart))
+      expect(response).to redirect_to(store_index_url)
     end
   end
 end
