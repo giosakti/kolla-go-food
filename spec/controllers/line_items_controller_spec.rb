@@ -31,9 +31,9 @@ describe LineItemsController do
 
     context "with existing line_item with the same food" do
       before :each do
-        cart = create(:cart)
-        session[:cart_id] = cart.id
-        line_item = create(:line_item, food: @food, cart: cart)
+        @cart = create(:cart)
+        session[:cart_id] = @cart.id
+        line_item = create(:line_item, food: @food, cart: @cart)
       end
 
       it "does not save the new line_item in the database" do
@@ -43,8 +43,11 @@ describe LineItemsController do
       end
 
       it "increments the quantity of line_item with the same food" do
-        post :create, params: { food_id: @food.id }
-        expect(assigns(:line_item).quantity).to eq(2)
+        expect {
+          post :create, params: { food_id: @food.id }
+        }.to change {
+          @cart.line_items.find_by(food_id: @food.id).quantity
+        }.by(1)
       end
     end
 
