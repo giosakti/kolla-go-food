@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe FoodsController do
+  it "includes CurrentCart" do
+    expect(LineItemsController.ancestors.include? CurrentCart).to eq(true)
+  end
+    
   describe 'GET #index' do
     context 'with params[:letter]' do
       it "populates an array of foods starting with the letter" do
