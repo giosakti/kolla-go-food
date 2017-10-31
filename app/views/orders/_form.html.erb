@@ -13,25 +13,25 @@
 
   <div class="field">
     <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, size: 40 %>
   </div>
 
   <div class="field">
-    <%= f.label :description %>
-    <%= f.text_area :description, rows: 10, cols: 60 %>
+    <%= f.label :address %>
+    <%= f.text_area :address, rows: 3, cols: 60 %>
   </div>
 
   <div class="field">
-    <%= f.label :image_url %>
-    <%= f.text_field :image_url %>
+    <%= f.label :email %>
+    <%= f.text_field :email, size: 40 %>
   </div>
 
   <div class="field">
-    <%= f.label :price %>
-    <%= f.text_field :price %>
+    <%= f.label :payment_type %>
+    <%= f.select :payment_type, Order.payment_types.keys, prompt: "Select a payment type" %>
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Place Order" %>
   </div>
 <% end %>
