@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   resources :foods
   resources :line_items
   resources :orders
+  resources :users
 end
