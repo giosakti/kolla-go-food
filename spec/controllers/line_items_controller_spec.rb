@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe LineItemsController do
+  before :each do
+    user = create(:user)
+    session[:user_id] = user.id
+  end
+  
   describe 'POST #create' do
     before :each do
       @food = create(:food)

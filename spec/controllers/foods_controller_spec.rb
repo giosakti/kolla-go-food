@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe FoodsController do
+  before :each do
+    user = create(:user)
+    session[:user_id] = user.id
+  end
+
   it "includes CurrentCart" do
     expect(LineItemsController.ancestors.include? CurrentCart).to eq(true)
   end

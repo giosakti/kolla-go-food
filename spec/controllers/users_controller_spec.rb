@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 describe UsersController do
+  before :each do
+    @user1 = create(:user, username: "user1")
+    session[:user_id] = @user1.id
+  end
+
   describe 'GET #index' do
     it "populates an array of all users" do 
-      user1 = create(:user, username: "user1")
       user2 = create(:user, username: "user2")
       get :index
-      expect(assigns(:users)).to match_array([user1, user2])
+      expect(assigns(:users)).to match_array([@user1, user2])
     end
 
     it "renders the :index template" do
@@ -30,12 +34,6 @@ describe UsersController do
   end
 
   describe 'GET #new' do
-    before :each do
-      @cart = create(:cart)
-      session[:cart_id] = @cart.id
-      @line_item = create(:line_item, cart: @cart)
-    end
-
     it "assigns a new User to @user" do
       get :new
       expect(assigns(:user)).to be_a_new(User)

@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe OrdersController do
+  before :each do
+    user = create(:user)
+    session[:user_id] = user.id
+  end
+  
   describe 'GET #index' do
     it "populates an array of all orders" do 
       order1 = create(:order, name: "Buyer 1")

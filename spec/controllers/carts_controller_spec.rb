@@ -18,6 +18,11 @@ describe CartsController do
   # CartsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  before :each do
+    user = create(:user)
+    session[:user_id] = user.id
+  end
+
   describe "GET index" do
     it "assigns all carts as @carts" do
       cart = Cart.create! valid_attributes
@@ -29,7 +34,7 @@ describe CartsController do
   describe "GET show" do
     it "assigns the requested cart as @cart" do
       cart = Cart.create! valid_attributes
-      get :show, {:id => cart.to_param}, valid_session
+      get :show, params: {:id => cart.to_param}
       expect(assigns(:cart)).to eq(cart)
     end
 
@@ -57,7 +62,7 @@ describe CartsController do
   describe "GET edit" do
     it "assigns the requested cart as @cart" do
       cart = Cart.create! valid_attributes
-      get :edit, {:id => cart.to_param}, valid_session
+      get :edit, params: {:id => cart.to_param}
       expect(assigns(:cart)).to eq(cart)
     end
   end
@@ -66,12 +71,12 @@ describe CartsController do
     describe "with valid params" do
       it "creates a new Cart" do
         expect {
-          post :create, {:cart => valid_attributes}, valid_session
+          post :create, params: { cart: valid_attributes}
         }.to change(Cart, :count).by(1)
       end
 
       it "assigns a newly created cart as @cart" do
-        post :create, {:cart => valid_attributes}, valid_session
+        post :create, params: { cart: valid_attributes }
         expect(assigns(:cart)).to be_a(Cart)
         expect(assigns(:cart)).to be_persisted
       end
@@ -103,20 +108,20 @@ describe CartsController do
 
       it "updates the requested cart" do
         cart = Cart.create! valid_attributes
-        put :update, {:id => cart.to_param, :cart => new_attributes}, valid_session
+        put :update, params: { id: cart.to_param, cart: new_attributes }
         cart.reload
         skip("Add assertions for updated state")
       end
 
       it "assigns the requested cart as @cart" do
         cart = Cart.create! valid_attributes
-        put :update, {:id => cart.to_param, :cart => valid_attributes}, valid_session
+        put :update, params: { id: cart.to_param, cart: valid_attributes }
         expect(assigns(:cart)).to eq(cart)
       end
 
       it "redirects to the cart" do
         cart = Cart.create! valid_attributes
-        put :update, {:id => cart.to_param, :cart => valid_attributes}, valid_session
+        put :update, params: { id: cart.to_param, cart: valid_attributes }
         expect(response).to redirect_to(cart)
       end
     end
@@ -124,13 +129,13 @@ describe CartsController do
     describe "with invalid params" do
       it "assigns the cart as @cart" do
         cart = Cart.create! valid_attributes
-        put :update, {:id => cart.to_param, :cart => invalid_attributes}, valid_session
+        put :update, params: { id: cart.to_param, cart: invalid_attributes }
         expect(assigns(:cart)).to eq(cart)
       end
 
       it "re-renders the 'edit' template" do
         cart = Cart.create! valid_attributes
-        put :update, {:id => cart.to_param, :cart => invalid_attributes}, valid_session
+        put :update, params: { id: cart.to_param, cart: invalid_attributes }
         expect(response).to render_template("edit")
       end
     end
@@ -145,17 +150,17 @@ describe CartsController do
     context "with valid cart id" do
       it "destroys the requested cart" do
         expect {
-          delete :destroy, params: { id: @cart.id }, session: valid_session
+          delete :destroy, params: { id: @cart.id }
         }.to change(Cart, :count).by(-1)
       end
 
       it "removes the cart from user's session" do
-        delete :destroy, params: { id: @cart.id }, session: valid_session
+        delete :destroy, params: { id: @cart.id }
         expect(session[:id]).to eq(nil)
       end
 
       it "redirects to the store home page" do
-        delete :destroy, params: { id: @cart.id }, session: valid_session
+        delete :destroy, params: { id: @cart.id }
         expect(response).to redirect_to(store_index_url)
       end
     end
@@ -165,7 +170,7 @@ describe CartsController do
         other_cart = create(:cart)
 
         expect{
-          delete :destroy, params: { id: other_cart.id }, session: valid_session
+          delete :destroy, params: { id: other_cart.id }
         }.not_to change(Cart, :count)
       end
     end
