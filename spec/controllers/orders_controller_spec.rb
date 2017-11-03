@@ -104,6 +104,13 @@ describe OrdersController do
         expect(session[:cart_id]).to eq(nil)
       end
 
+      it "sends order confirmation email" do
+        post :create, params: { order: attributes_for(:order) }
+        expect { 
+          OrderMailer.received((assigns(:order))).deliver 
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end
+
       it "redirects to store index page" do
         post :create, params: { order: attributes_for(:order) }
         expect(response).to redirect_to store_index_url
