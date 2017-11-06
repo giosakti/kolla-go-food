@@ -3,20 +3,26 @@
 <h1>Orders</h1>
 
 <table>
+  <tr>
+    <td>Name</td>
+    <td>Address</td>
+    <td>Email</td>
+    <td>Sub Total</td>
+    <td>Discount</td>
+    <td>Total Price</td>
+    <td>Actions</td>
+  </tr>
   <% @orders.each do |order| %>
     <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
-      <td>
-        <%= image_tag(order.image_url, class: 'list_image') %>
-      </td>
-      <td class="list_description">
-        <dl>
-          <dt><%= order.name %></dt>
-          <dd><%= truncate(strip_tags(order.description), length: 80) %></dd>
-        </dl>
-      </td>
+      <td><%= order.name %></td>
+      <td><%= order.address %></td>
+      <td><%= order.email %></td>
+      <td><%= order.sub_total_price %></td>
+      <td><%= order.discount %></td>
+      <td><%= order.total_price %></td>
       <td class="list_actions">
-        <%= link_to 'Show', order %><br/>
-        <%= link_to 'Edit', edit_order_path(order) %><br/>
+        <%= link_to 'Show', order %> &nbsp;
+        <%= link_to 'Edit', edit_order_path(order) %> &nbsp;
         <%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %>
       </td>
     </tr>

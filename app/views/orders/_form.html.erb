@@ -31,6 +31,11 @@
     <%= f.select :payment_type, Order.payment_types.keys, prompt: "Select a payment type" %>
   </div>
 
+  <div class="field">
+    <%= f.label :voucher %>
+    <%= select(:order, :voucher_id, Voucher.all.collect {|v| [ v.code, v.id ] }, { prompt: "Select a voucher" }) %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Place Order" %>
   </div>

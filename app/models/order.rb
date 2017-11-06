@@ -33,11 +33,13 @@ class Order < ApplicationRecord
 
   def discount
     discount = 0
-    if voucher.unit == "percent"
-      calculated_discount = voucher.amount/100 * sub_total_price
-      discount = calculated_discount > voucher.max_amount ? voucher.max_amount : calculated_discount
-    else
-      discount = order.voucher.amount
+    unless voucher.nil?
+      if voucher.unit == "percent"
+        calculated_discount = voucher.amount/100 * sub_total_price
+        discount = calculated_discount > voucher.max_amount ? voucher.max_amount : calculated_discount
+      else
+        discount = order.voucher.amount
+      end
     end
     discount
   end
