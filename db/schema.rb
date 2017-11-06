@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101120121) do
+ActiveRecord::Schema.define(version: 20171106075007) do
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20171101120121) do
     t.integer  "payment_type"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.integer  "voucher_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -50,6 +51,17 @@ ActiveRecord::Schema.define(version: 20171101120121) do
     t.string   "password_digest"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "vouchers", force: :cascade do |t|
+    t.string   "code"
+    t.date     "valid_from"
+    t.date     "valid_through"
+    t.float    "amount"
+    t.string   "unit"
+    t.float    "max_amount"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
 end

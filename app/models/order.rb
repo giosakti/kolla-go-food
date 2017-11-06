@@ -6,6 +6,7 @@ class Order < ApplicationRecord
   }
 
   has_many :line_items, dependent: :destroy
+  belongs_to :voucher, optional: true
 
   validates :name, :address, :email, :payment_type, presence: true
   validates :email, format: {
@@ -19,5 +20,28 @@ class Order < ApplicationRecord
       item.cart_id = nil
       line_items << item
     end
+  end
+
+  def sub_total_price
+    sum = 0
+    line_items.each do |line_item|
+      sum += line_item.total_price
+    end
+    sum
+  end
+
+  def discount
+    discount = 0
+    if voucher.unit == "percent"
+      calculated_discount = voucher.amount/100 * sub_total_price
+      discount = calculated_discount > voucher.max_amount ? voucher.max_amount : calculated_discount
+    else
+      discount = order.voucher.amount
+    end
+    discount
+  end
+
+  def total_price
+    sub_total_price - discount
   end
 end
