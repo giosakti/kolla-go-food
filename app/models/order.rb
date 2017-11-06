@@ -14,6 +14,7 @@ class Order < ApplicationRecord
     message: 'must be in valid email format'
   }
   validates :payment_type, inclusion: payment_types.keys
+  validates_with VoucherValidator
 
   def add_line_items(cart)
     cart.line_items.each do |item|

@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :voucher do
     code "GOJEK"
-    valid_from "2017-11-06"
-    valid_through "2017-11-06"
+    valid_from 2.days.ago
+    valid_through 2.days.from_now
     amount 10.0
     unit "percent"
     max_amount 10000.0

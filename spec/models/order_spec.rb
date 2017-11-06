@@ -66,25 +66,36 @@ describe Order do
   end
 
   describe "adding discount to order" do
-    before :each do
-      @voucher = create(:voucher, amount: 15.0, unit: "percent", max_amount: 10000)
-      @cart = create(:cart)
-      @food = create(:food, price: 100000.0)
-      @line_item = create(:line_item, quantity: 1, food: @food, cart: @cart)
-      @order = create(:order, voucher: @voucher)
-      @order.add_line_items(@cart)
+    context "with valid voucher" do
+      before :each do
+        @voucher = create(:voucher, amount: 15.0, unit: "percent", max_amount: 10000)
+        @cart = create(:cart)
+        @food = create(:food, price: 100000.0)
+        @line_item = create(:line_item, quantity: 1, food: @food, cart: @cart)
+        @order = create(:order, voucher: @voucher)
+        @order.add_line_items(@cart)
+      end
+
+      it "can calculate sub total price" do
+        expect(@order.sub_total_price).to eq(100000)
+      end
+
+      it "changes discount to max_amount if discount is bigger than max_amount" do
+        expect(@order.discount).to eq(10000)
+      end
+
+      it "can calculate total price" do
+        expect(@order.total_price).to eq(90000)
+      end
     end
 
-    it "can calculate sub total price" do
-      expect(@order.sub_total_price).to eq(100000)
-    end
-
-    it "changes discount to max_amount if discount is bigger than max_amount" do
-      expect(@order.discount).to eq(10000)
-    end
-
-    it "can calculate total price" do
-      expect(@order.total_price).to eq(90000)
+    context "with invalid voucher" do
+      it "is invalid with invalid voucher" do
+        voucher = create(:voucher, valid_through: 1.day.ago)
+        order = build(:order, voucher: voucher)
+        order.valid?
+        expect(order.errors[:base]).to include("must use valid voucher")
+      end
     end
   end
 end

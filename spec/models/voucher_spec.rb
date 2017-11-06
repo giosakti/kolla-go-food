@@ -49,6 +49,12 @@ describe Voucher do
     expect(voucher.errors[:valid_through]).to include("can't be blank")
   end
 
+  it "is invalid with valid_from > valid_through" do
+    voucher = build(:voucher, valid_from: 1.day.from_now, valid_through: 1.day.ago)
+    voucher.valid?
+    expect(voucher.errors[:valid_from]).to include("valid_from must be less than valid_through")
+  end
+
   it "is invalid without a amount" do
     voucher = build(:voucher, amount: nil)
     voucher.valid?
@@ -71,6 +77,12 @@ describe Voucher do
     voucher = build(:voucher, unit: nil)
     voucher.valid?
     expect(voucher.errors[:unit]).to include("can't be blank")
+  end
+
+  it "is invalid with wrong unit" do
+    voucher = build(:voucher, unit: "dollar")
+    voucher.valid?
+    expect(voucher.errors[:unit]).to include("is not included in the list")
   end
 
   it "is invalid without max_amount" do
