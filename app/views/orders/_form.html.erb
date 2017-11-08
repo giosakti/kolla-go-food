@@ -33,7 +33,7 @@
 
   <div class="field">
     <%= f.label :voucher %>
-    <%= select(:order, :voucher_id, Voucher.all.collect {|v| [ v.code, v.id ] }, { prompt: "Select a voucher" }) %>
+    <%= text_field_tag "voucher_code" %>
   </div>
 
   <div class="actions">

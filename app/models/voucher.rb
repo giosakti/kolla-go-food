@@ -3,12 +3,19 @@ class Voucher < ApplicationRecord
 
   validates :code, :valid_from, :valid_through, :amount, :unit, :max_amount, presence: true
   validates :code, uniqueness: { case_sensitive: false }
-  validates :amount, numericality: { greater_than_or_equal_to: 0 }
-  validates :max_amount, numericality: { greater_than_or_equal_to: 0 }
+  validates :amount, numericality: { greater_than: 0 }
+  validates :max_amount, numericality: { greater_than: 0 }
   validates :unit, inclusion: { in: %w(percent rupiah) }
+  
   validates_each :valid_from do |record, attr, value|
     if !value.nil? && !record.valid_through.nil?
       record.errors.add(attr, "valid_from must be less than valid_through") if value > record.valid_through
+    end
+  end
+
+  validates_each :max_amount do |record, attr, value|
+    if record.unit == "rupiah"
+      record.errors.add(attr, "must be greater than or equal to amount") if value < record.amount
     end
   end
 

@@ -15,7 +15,7 @@ describe Voucher do
     expect(voucher.errors[:code]).to include("can't be blank")
   end
 
-  it "changes non all capitals code to all capitals when saved" do
+  it "saves code in all capital letters" do
     voucher = build(:voucher, code: "gratis")
     voucher.save
     expect(voucher.code).to eq("GRATIS")
@@ -55,22 +55,22 @@ describe Voucher do
     expect(voucher.errors[:valid_from]).to include("valid_from must be less than valid_through")
   end
 
-  it "is invalid without a amount" do
+  it "is invalid without an amount" do
     voucher = build(:voucher, amount: nil)
     voucher.valid?
     expect(voucher.errors[:amount]).to include("can't be blank")
   end
 
-  it "is invalid without numeric amount" do
+  it "is invalid without a numeric amount" do
     voucher = build(:voucher, amount: "abc")
     voucher.valid?
     expect(voucher.errors[:amount]).to include("is not a number")
   end
 
-  it "is invalid with amount less than 0" do
+  it "is invalid with amount not greater than 0" do
     voucher = build(:voucher, amount: -0.1)
     voucher.valid?
-    expect(voucher.errors[:amount]).to include("must be greater than or equal to 0")
+    expect(voucher.errors[:amount]).to include("must be greater than 0")
   end
 
   it "is invalid without a unit" do
@@ -79,28 +79,36 @@ describe Voucher do
     expect(voucher.errors[:unit]).to include("can't be blank")
   end
 
-  it "is invalid with wrong unit" do
+  it "is invalid with a wrong unit" do
     voucher = build(:voucher, unit: "dollar")
     voucher.valid?
     expect(voucher.errors[:unit]).to include("is not included in the list")
   end
 
-  it "is invalid without max_amount" do
+  it "is invalid without a max_amount" do
     voucher = build(:voucher, max_amount: nil)
     voucher.valid?
     expect(voucher.errors[:max_amount]).to include("can't be blank")
   end
 
-  it "is invalid without numeric max_amount" do
+  it "is invalid without a numeric max_amount" do
     voucher = build(:voucher, max_amount: "abc")
     voucher.valid?
     expect(voucher.errors[:max_amount]).to include("is not a number")
   end
 
-  it "is invalid with max_amount less than 0" do
+  it "is invalid with a max_amount not greater than 0" do
     voucher = build(:voucher, max_amount: -0.1)
     voucher.valid?
-    expect(voucher.errors[:max_amount]).to include("must be greater than or equal to 0")
+    expect(voucher.errors[:max_amount]).to include("must be greater than 0")
+  end
+
+  context "with rupiah as unit" do
+    it "is invalid with max_amount less than amount" do
+      voucher = build(:voucher, amount: 15000, unit: "rupiah", max_amount: 10000)
+      voucher.valid?
+      expect(voucher.errors[:max_amount]).to include("must be greater than or equal to amount")
+    end
   end
 
   it "can't be destroyed while it has order(s)" do

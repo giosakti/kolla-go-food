@@ -38,7 +38,7 @@ class Order < ApplicationRecord
         calculated_discount = voucher.amount/100 * sub_total_price
         discount = calculated_discount > voucher.max_amount ? voucher.max_amount : calculated_discount
       else
-        discount = order.voucher.amount
+        discount = voucher.amount
       end
     end
     discount
