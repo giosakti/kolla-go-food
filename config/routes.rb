@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get 'admin' => 'admin#index'
   get 'home/hello'
+  resources :categories
+  resources :carts
   root 'store#index', as: 'store_index'
   
   controller :sessions do
