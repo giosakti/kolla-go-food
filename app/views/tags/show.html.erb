@@ -5,20 +5,5 @@
   <%= @tag.name %>
 </p>
 
-<p>
-  <strong>Description:</strong>
-  <%= @tag.description %>
-</p>
-
-<p>
-  <strong>Image url:</strong>
-  <%= @tag.image_url %>
-</p>
-
-<p>
-  <strong>Price:</strong>
-  <%= @tag.price %>
-</p>
-
 <%= link_to 'Edit', edit_tag_path(@tag) %> |
 <%= link_to 'Back', tags_path %>

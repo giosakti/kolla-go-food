@@ -5,19 +5,10 @@
 <table>
   <% @tags.each do |tag| %>
     <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
-      <td>
-        <%= image_tag(tag.image_url, class: 'list_image') %>
-      </td>
-      <td class="list_description">
-        <dl>
-          <dt><%= tag.name %></dt>
-          <dd><%= truncate(strip_tags(tag.description), length: 80) %></dd>
-          <dd>Category: <%= tag.category.try(:name) %></dd>
-        </dl>
-      </td>
+      <td><%= tag.name %></td>
       <td class="list_actions">
-        <%= link_to 'Show', tag %><br/>
-        <%= link_to 'Edit', edit_tag_path(tag) %><br/>
+        <%= link_to 'Show', tag %> &nbsp;
+        <%= link_to 'Edit', edit_tag_path(tag) %> &nbsp;
         <%= link_to 'Destroy', tag, method: :delete, data: { confirm: 'Are you sure?' } %>
       </td>
     </tr>
