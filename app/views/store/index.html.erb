@@ -1,16 +1,19 @@
 <p id="notice"><%= notice %></p>
 <h1>Your Food Catalog</h1>
 
-<% @foods.each do |food| %>
-  <div class="entry">
-    <%= image_tag(food.image_url) %> 
-    <h3><%= food.name %></h3>
-    <%= sanitize(food.description) %>
-    <div class="price_line">
-      <span class="price">
-        <%= number_to_currency(food.price, unit: "Rp ", delimiter: ".", separator: ",") %>
-        <%= button_to 'Add to Cart', line_items_path(food_id: food), remote: true %>
-      </span>
+<% @restaurants.each do |restaurant| %>
+  <h2><%= restaurant.name %></h2>
+  <% restaurant.foods.each do |food| %>
+    <div class="entry">
+      <%= image_tag(food.image_url) %> 
+      <h3><%= food.name %></h3>
+      <%= sanitize(food.description) %>
+      <div class="price_line">
+        <span class="price">
+          <%= number_to_currency(food.price, unit: "Rp ", delimiter: ".", separator: ",") %>
+          <%= button_to 'Add to Cart', line_items_path(food_id: food), remote: true %>
+        </span>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>

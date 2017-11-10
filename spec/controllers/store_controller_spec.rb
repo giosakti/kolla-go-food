@@ -7,11 +7,11 @@ describe StoreController do
       expect(response).to have_http_status(:success)
     end
 
-    it "returns a list of foods, ordered by name" do
-      nasi_uduk = create(:food, name: "Nasi Uduk")
-      kerak_telor = create(:food, name: "Kelar Telor")
+    it "returns a list of restaurants, ordered by name" do
+      restaurant1 = create(:restaurant)
+      restaurant2 = create(:restaurant)
       get :index
-      expect(assigns(:foods)).to eq([kerak_telor, nasi_uduk])
+      expect(assigns(:foods)).to eq([restaurant1, restaurant2])
     end
 
     it "includes CurrentCart" do

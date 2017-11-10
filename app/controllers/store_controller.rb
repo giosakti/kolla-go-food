@@ -4,6 +4,6 @@ class StoreController < ApplicationController
   skip_before_action :authorize
 
   def index
-    @foods = Food.order(:name)
+    @restaurants = Restaurant.order(:name)
   end
 end
