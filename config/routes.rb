@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :foods
   resources :line_items
   resources :orders
+  resources :tags
   resources :users
   resources :vouchers
 end
