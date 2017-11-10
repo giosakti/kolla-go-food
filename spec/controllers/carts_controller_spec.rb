@@ -54,7 +54,7 @@ describe CartsController do
 
   describe "GET new" do
     it "assigns a new cart as @cart" do
-      get :new, {}, valid_session
+      get :new
       expect(assigns(:cart)).to be_a_new(Cart)
     end
   end
@@ -82,14 +82,14 @@ describe CartsController do
       end
 
       it "redirects to the created cart" do
-        post :create, {:cart => valid_attributes}, valid_session
+        post :create, params: { cart: valid_attributes }
         expect(response).to redirect_to(Cart.last)
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved cart as @cart" do
-        post :create, {:cart => invalid_attributes}, valid_session
+        post :create, params: { cart: invalid_attributes }
         expect(assigns(:cart)).to be_a_new(Cart)
       end
 

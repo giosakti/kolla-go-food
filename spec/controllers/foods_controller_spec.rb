@@ -11,12 +11,15 @@ describe FoodsController do
   end
     
   describe 'GET #index' do
+    before :each do
+      @nasi_uduk = create(:food, name: "Nasi Uduk")
+      @kerak_telor = create(:food, name: "Kelar Telor")
+    end
+
     context 'with params[:letter]' do
       it "populates an array of foods starting with the letter" do
-        nasi_uduk = create(:food, name: "Nasi Uduk")
-        kerak_telor = create(:food, name: "Kelar Telor")
         get :index, params: { letter: 'N' }
-        expect(assigns(:foods)).to match_array([nasi_uduk])
+        expect(assigns(:foods)).to match_array([@nasi_uduk])
       end
 
       it "renders the :index template" do
@@ -27,10 +30,8 @@ describe FoodsController do
 
     context 'without params[:letter]' do
       it "populates an array of all foods" do 
-        nasi_uduk = create(:food, name: "Nasi Uduk")
-        kerak_telor = create(:food, name: "Kelar Telor")
         get :index
-        expect(assigns(:foods)).to match_array([nasi_uduk, kerak_telor])
+        expect(assigns(:foods)).to match_array([@nasi_uduk, @kerak_telor])
       end
 
       it "renders the :index template" do
@@ -83,13 +84,15 @@ describe FoodsController do
   describe 'POST #create' do
     context "with valid attributes" do
       it "saves the new food in the database" do
+        category = create(:category)
         expect{
-          post :create, params: { food: attributes_for(:food) }
+          post :create, params: { food: attributes_for(:food, category_id: category.id) }
         }.to change(Food, :count).by(1)
       end
 
       it "redirects to foods#show" do
-        post :create, params: { food: attributes_for(:food) }
+        category = create(:category)
+        post :create, params: { food: attributes_for(:food, category_id: category.id) }
         expect(response).to redirect_to(food_path(assigns[:food]))
       end
     end

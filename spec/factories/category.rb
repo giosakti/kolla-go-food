@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :category do
-    name { Faker::Dessert.variety } 
-    # This could be any faker, though
+    sequence(:name) { |n| "Category-#{n}" }
   end
 
   factory :invalid_category, parent: :category do
