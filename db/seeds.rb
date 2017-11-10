@@ -3,6 +3,10 @@ Category.delete_all
 category1 = Category.create!(name: 'Main Dish')
 category2 = Category.create!(name: 'Beverage')
 
+Restaurant.delete_all
+
+restaurant = Restaurant.create!(name: 'Abuba Steak', address: 'Jl. Tebet Raya')
+
 Food.delete_all
 
 Food.create!(
@@ -18,7 +22,8 @@ Food.create!(
       </p>},
   image_url: "Tenderloin.png",
   price: 95000.00,
-  category_id: category1.id
+  category_id: category1.id,
+  restaurant_id: restaurant.id
 )
 
 Food.create!(
@@ -32,7 +37,8 @@ Food.create!(
       </p>},
   image_url: "Sirloin.png",
   price: 85000.00,
-  category_id: category1.id
+  category_id: category1.id,
+  restaurant_id: restaurant.id
 )
 
 Food.create!(
@@ -47,5 +53,6 @@ Food.create!(
       </p>},
   image_url: "Rib Eye.png",
   price: 90000.00,
-  category_id: category1.id
+  category_id: category1.id,
+  restaurant_id: restaurant.id
 )
