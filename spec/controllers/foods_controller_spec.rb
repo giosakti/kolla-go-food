@@ -85,8 +85,10 @@ describe FoodsController do
     context "with valid attributes" do
       it "saves the new food in the database" do
         category = create(:category)
+        tag1 = create(:tag)
+        tag2 = create(:tag)
         expect{
-          post :create, params: { food: attributes_for(:food, category_id: category.id) }
+          post :create, params: { food: attributes_for(:food, category_id: category.id, tag_ids: [tag1.id, tag2.id]) }
         }.to change(Food, :count).by(1)
       end
 

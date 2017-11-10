@@ -84,4 +84,14 @@ describe Food do
 
     expect { food.destroy }.not_to change(Food, :count)
   end
+
+  it "can be associated with many tags" do
+    tag1 = create(:tag)
+    tag2 = create(:tag)
+    food = create(:food)
+
+    food.tags << tag1
+    food.tags << tag2
+    expect(food.tags.count).to eq(2)
+  end
 end
