@@ -1,5 +1,6 @@
 class Food < ApplicationRecord
   belongs_to :category
+  belongs_to :restaurant
   has_many :line_items
   has_and_belongs_to_many :tags
 
@@ -10,6 +11,7 @@ class Food < ApplicationRecord
     with: %r{\.(gif|jpg|png)\Z}i,
     message: 'must be a URL for GIF, JPG or PNG image.'
   }
+  validates_associated :category, :restaurant
 
   before_destroy :ensure_not_referenced_by_any_line_item
 

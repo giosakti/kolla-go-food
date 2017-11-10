@@ -5,6 +5,7 @@ FactoryGirl.define do
     image_url "Food.jpg"
     price 10000.0
     association :category
+    association :restaurant
   end
 
   factory :invalid_food, parent: :food do

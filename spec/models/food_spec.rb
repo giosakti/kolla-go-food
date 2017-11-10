@@ -55,6 +55,18 @@ describe Food do
     expect(food.errors[:image_url]).to include("must be a URL for GIF, JPG or PNG image.")
   end
 
+  it "is invalid without category" do
+    food = build(:food, category: nil)
+    food.valid?
+    expect(food.errors[:category]).to include("must exist")
+  end
+
+  it "is invalid without restaurant" do
+    food = build(:food, restaurant: nil)
+    food.valid?
+    expect(food.errors[:restaurant]).to include("must exist")
+  end
+
   describe "filter name by letter" do
     before :each do
       @food1 = create(:food, name: "Nasi Uduk")
