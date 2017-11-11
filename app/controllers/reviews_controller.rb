@@ -1,5 +1,7 @@
 class ReviewsController < ApplicationController
   before_action :load_reviewable
+  skip_before_action :authorize
+
   # GET /reviews
   # GET /reviews.json
   def index

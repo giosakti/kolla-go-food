@@ -3,6 +3,7 @@
 
 <% @restaurants.each do |restaurant| %>
   <h2><%= restaurant.name %></h2>
+  <%= link_to 'Write a Review', new_restaurant_review_path(restaurant_id: restaurant) %>
   <% restaurant.foods.each do |food| %>
     <div class="entry">
       <%= image_tag(food.image_url) %> 
@@ -12,6 +13,7 @@
         <span class="price">
           <%= number_to_currency(food.price, unit: "Rp ", delimiter: ".", separator: ",") %>
           <%= button_to 'Add to Cart', line_items_path(food_id: food), remote: true %>
+          <%= link_to 'Write a Review', new_food_review_path(food_id: food) %>
         </span>
       </div>
     </div>

@@ -4,6 +4,8 @@ describe FoodsController do
   before :each do
     user = create(:user)
     session[:user_id] = user.id
+
+    @food = create(:food)
   end
 
   it "includes CurrentCart" do
@@ -31,7 +33,7 @@ describe FoodsController do
     context 'without params[:letter]' do
       it "populates an array of all foods" do 
         get :index
-        expect(assigns(:foods)).to match_array([@nasi_uduk, @kerak_telor])
+        expect(assigns(:foods)).to match_array([@food, @nasi_uduk, @kerak_telor])
       end
 
       it "renders the :index template" do
@@ -43,14 +45,19 @@ describe FoodsController do
 
   describe 'GET #show' do
     it "assigns the requested food to @food" do
-      food = create(:food)
-      get :show, params: { id: food }
-      expect(assigns(:food)).to eq food
+      get :show, params: { id: @food }
+      expect(assigns(:food)).to eq @food
+    end
+
+    it "displays related reviews" do
+      review1 = create(:food_review, reviewable: @food)
+      review2 = create(:food_review, reviewable: @food)
+      get :show, params: { id: @food }
+      expect(assigns[:food].reviews).to match_array([review1, review2])
     end
 
     it "renders the :show template" do
-      food = create(:food)
-      get :show, params: { id: food }
+      get :show, params: { id: @food }
       expect(response).to render_template :show
     end
   end
@@ -69,14 +76,12 @@ describe FoodsController do
 
   describe 'GET #edit' do
     it "assigns the requested food to @food" do
-      food = create(:food)
-      get :edit, params: { id: food }
-      expect(assigns(:food)).to eq food
+      get :edit, params: { id: @food }
+      expect(assigns(:food)).to eq @food
     end
 
     it "renders the :edit template" do
-      food = create(:food)
-      get :edit, params: { id: food }
+      get :edit, params: { id: @food }
       expect(response).to render_template :edit
     end
   end
@@ -117,10 +122,6 @@ describe FoodsController do
   end
 
   describe 'PATCH #update' do
-    before :each do
-      @food = create(:food)
-    end
-
     context "with valid attributes" do
       it "locates the requested @food" do
         patch :update, params: { id: @food, food: attributes_for(:food) }
@@ -154,10 +155,6 @@ describe FoodsController do
   end
 
   describe 'DELETE #destroy' do
-    before :each do
-      @food = create(:food)
-    end
-
     it "deletes the food from the database" do
       expect{
         delete :destroy, params: { id: @food }

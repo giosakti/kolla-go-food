@@ -20,5 +20,15 @@
   <%= @food.price %>
 </p>
 
+<p>
+  <strong>Reviews:</strong>
+  <br/><br/>
+  <% @food.reviews.each do |review| %>
+    Reviewer: <%= review.reviewer_name %><br/>
+    Title: <%= review.title %><br/>
+    Description: <%= review.description %><br/>
+  <% end %>
+</p>
+
 <%= link_to 'Edit', edit_food_path(@food) %> |
 <%= link_to 'Back', foods_path %>

@@ -10,5 +10,15 @@
   <%= @restaurant.address %>
 </p>
 
+<p>
+  <strong>Reviews:</strong>
+  <br/><br/>
+  <% @restaurant.reviews.each do |review| %>
+    Reviewer: <%= review.reviewer_name %><br/>
+    Title: <%= review.title %><br/>
+    Description: <%= review.description %><br/>
+  <% end %>
+</p>
+
 <%= link_to 'Edit', edit_restaurant_path(@restaurant) %> |
 <%= link_to 'Back', restaurants_path %>

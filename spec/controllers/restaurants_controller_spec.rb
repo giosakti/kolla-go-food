@@ -24,14 +24,19 @@ describe RestaurantsController do
 
   describe 'GET #show' do
     it "assigns the requested restaurant to @restaurant" do
-      restaurant = create(:restaurant)
-      get :show, params: { id: restaurant }
-      expect(assigns(:restaurant)).to eq restaurant
+      get :show, params: { id: @restaurant }
+      expect(assigns(:restaurant)).to eq @restaurant
+    end
+
+    it "displays related reviews" do
+      review1 = create(:restaurant_review, reviewable: @restaurant)
+      review2 = create(:restaurant_review, reviewable: @restaurant)
+      get :show, params: { id: @restaurant }
+      expect(assigns[:restaurant].reviews).to match_array([review1, review2])
     end
 
     it "renders the :show template" do
-      restaurant = create(:restaurant)
-      get :show, params: { id: restaurant }
+      get :show, params: { id: @restaurant }
       expect(response).to render_template :show
     end
   end
@@ -50,14 +55,12 @@ describe RestaurantsController do
 
   describe 'GET #edit' do
     it "assigns the requested restaurant to @restaurant" do
-      restaurant = create(:restaurant)
-      get :edit, params: { id: restaurant }
-      expect(assigns(:restaurant)).to eq restaurant
+      get :edit, params: { id: @restaurant }
+      expect(assigns(:restaurant)).to eq @restaurant
     end
 
     it "renders the :edit template" do
-      restaurant = create(:restaurant)
-      get :edit, params: { id: restaurant }
+      get :edit, params: { id: @restaurant }
       expect(response).to render_template :edit
     end
   end
@@ -124,10 +127,6 @@ describe RestaurantsController do
   end
 
   describe 'DELETE #destroy' do
-    before :each do
-      @restaurant = create(:restaurant)
-    end
-
     it "deletes the restaurant from the database" do
       expect{
         delete :destroy, params: { id: @restaurant }
