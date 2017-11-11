@@ -65,15 +65,13 @@ describe RestaurantsController do
   describe 'POST #create' do
     context "with valid attributes" do
       it "saves the new restaurant in the database" do
-        category = create(:category)
         expect{
-          post :create, params: { restaurant: attributes_for(:restaurant, category_id: category.id) }
+          post :create, params: { restaurant: attributes_for(:restaurant) }
         }.to change(Restaurant, :count).by(1)
       end
 
       it "redirects to restaurants#show" do
-        category = create(:category)
-        post :create, params: { restaurant: attributes_for(:restaurant, category_id: category.id) }
+        post :create, params: { restaurant: attributes_for(:restaurant) }
         expect(response).to redirect_to(restaurant_path(assigns[:restaurant]))
       end
     end

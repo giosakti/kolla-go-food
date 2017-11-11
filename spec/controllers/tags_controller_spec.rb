@@ -65,15 +65,13 @@ describe TagsController do
   describe 'POST #create' do
     context "with valid attributes" do
       it "saves the new tag in the database" do
-        category = create(:category)
         expect{
-          post :create, params: { tag: attributes_for(:tag, category_id: category.id) }
+          post :create, params: { tag: attributes_for(:tag) }
         }.to change(Tag, :count).by(1)
       end
 
       it "redirects to tags#show" do
-        category = create(:category)
-        post :create, params: { tag: attributes_for(:tag, category_id: category.id) }
+        post :create, params: { tag: attributes_for(:tag) }
         expect(response).to redirect_to(tag_path(assigns[:tag]))
       end
     end

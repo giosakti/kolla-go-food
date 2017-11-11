@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :food_review, class: "Review" do
     reviewer_name { Faker::Name.first_name }
-    title { Faker::Lorem.sentences(1) }
+    title { Faker::Lorem.sentence }
     description { Faker::Lorem.paragraph }
     association :reviewable, factory: :food
   end
@@ -15,7 +15,7 @@ FactoryGirl.define do
 
   factory :restaurant_review, class: "Review" do
     reviewer_name { Faker::Name.first_name }
-    title { Faker::Lorem.sentences(1) }
+    title { Faker::Lorem.sentence }
     description { Faker::Lorem.paragraph }
     association :reviewable, factory: :restaurant
   end

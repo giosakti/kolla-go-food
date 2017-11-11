@@ -12,10 +12,14 @@ Rails.application.routes.draw do
   end
   
   resources :carts
-  resources :foods
+  resources :foods do
+    resources :reviews, only: [:index, :new, :create]
+  end
   resources :line_items
   resources :orders
-  resources :restaurants
+  resources :restaurants do
+    resources :reviews, only: [:index, :new, :create]
+  end
   resources :tags
   resources :users
   resources :vouchers
