@@ -96,7 +96,8 @@ describe FoodsController do
 
       it "redirects to foods#show" do
         category = create(:category)
-        post :create, params: { food: attributes_for(:food, category_id: category.id) }
+        restaurant = create(:restaurant)
+        post :create, params: { food: attributes_for(:food, category_id: category.id, restaurant_id: restaurant.id) }
         expect(response).to redirect_to(food_path(assigns[:food]))
       end
     end

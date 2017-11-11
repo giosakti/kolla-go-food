@@ -11,7 +11,7 @@ describe StoreController do
       restaurant1 = create(:restaurant)
       restaurant2 = create(:restaurant)
       get :index
-      expect(assigns(:foods)).to eq([restaurant1, restaurant2])
+      expect(assigns(:restaurants)).to eq([restaurant1, restaurant2])
     end
 
     it "includes CurrentCart" do
