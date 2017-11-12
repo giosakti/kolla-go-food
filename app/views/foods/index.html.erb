@@ -15,6 +15,16 @@
       <%= label_tag 'Description:' %>
       <%= text_field_tag "search[description_like]" %>
     </div>
+
+    <div>
+      <%= label_tag 'Minimum Price:' %>
+      <%= text_field_tag "search[minimum_price]" %>
+    </div>
+
+    <div>
+      <%= label_tag 'Maximum Price:' %>
+      <%= text_field_tag "search[maximum_price]" %>
+    </div>
     
     <div>
       <%= submit_tag "Search" %>

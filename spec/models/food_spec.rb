@@ -89,9 +89,9 @@ describe Food do
 
   describe "search" do
     before :each do
-      @searched_food1 = create(:food, name: "Ayam Rica-Rica", description: "Ayam")
-      @searched_food2 = create(:food, name: "Steak Ayam BBQ", description: "Steak")
-      @searched_food3 = create(:food, name: "Nasi Goreng Ayam", description: "Nasi Goreng")
+      @searched_food1 = create(:food, name: "Ayam Rica-Rica", description: "Ayam", price: 15000)
+      @searched_food2 = create(:food, name: "Steak Ayam BBQ", description: "Steak", price: 25000)
+      @searched_food3 = create(:food, name: "Nasi Goreng Ayam", description: "Nasi Goreng", price: 35000)
     end
 
     it "can be searched by name" do
@@ -100,6 +100,14 @@ describe Food do
 
     it "can be searched by description" do
       expect(Food.search(description_like: "ayam")).to eq([@searched_food1])
+    end
+
+    it "can be searched by minimum price" do
+      expect(Food.search(minimum_price: 20000)).to eq([@searched_food2, @searched_food3])
+    end
+
+    it "can be searched by maximum price" do
+      expect(Food.search(maximum_price: 30000)).to eq([@searched_food1, @searched_food2])
     end
   end
 

@@ -23,8 +23,10 @@ class Food < ApplicationRecord
   def self.search(params)
     foods = self.all
     
-    foods = foods.where("LOWER(name) LIKE ?", "%#{params[:name_like].downcase}%") if params[:name_like]
-    foods = foods.where("LOWER(description) LIKE ?", "%#{params[:description_like].downcase}%") if params[:description_like]
+    foods = foods.where("LOWER(name) LIKE ?", "%#{params[:name_like].downcase}%") if !params[:name_like].empty?
+    foods = foods.where("LOWER(description) LIKE ?", "%#{params[:description_like].downcase}%") if !params[:description_like].empty?
+    foods = foods.where("price >= ?", params[:minimum_price]) if !params[:minimum_price].empty?
+    foods = foods.where("price <= ?", params[:maximum_price]) if !params[:maximum_price].empty?
 
     foods
   end

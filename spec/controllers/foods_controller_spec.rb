@@ -5,7 +5,7 @@ describe FoodsController do
     user = create(:user)
     session[:user_id] = user.id
 
-    @food = create(:food)
+    @food = create(:food, price: 10000)
   end
 
   it "includes CurrentCart" do
@@ -14,14 +14,15 @@ describe FoodsController do
     
   describe 'GET #index' do
     before :each do
-      @nasi_uduk = create(:food, name: "Nasi Uduk")
-      @kerak_telor = create(:food, name: "Kelar Telor")
+      @searched_food1 = create(:food, name: "Ayam Rica-Rica", description: "Ayam", price: 15000)
+      @searched_food2 = create(:food, name: "Steak Ayam BBQ", description: "Steak", price: 25000)
+      @searched_food3 = create(:food, name: "Nasi Goreng Ayam", description: "Nasi Goreng", price: 35000)
     end
 
     context 'with params[:letter]' do
       it "populates an array of foods starting with the letter" do
         get :index, params: { letter: 'N' }
-        expect(assigns(:foods)).to match_array([@nasi_uduk])
+        expect(assigns(:foods)).to match_array([@searched_food3])
       end
 
       it "renders the :index template" do
@@ -33,7 +34,7 @@ describe FoodsController do
     context 'without params[:letter]' do
       it "populates an array of all foods" do 
         get :index
-        expect(assigns(:foods)).to match_array([@food, @nasi_uduk, @kerak_telor])
+        expect(assigns(:foods)).to match_array([@food, @searched_food1, @searched_food2, @searched_food3])
       end
 
       it "renders the :index template" do
@@ -43,12 +44,6 @@ describe FoodsController do
     end
 
     describe 'with search parameters' do
-      before :each do
-        @searched_food1 = create(:food, name: "Ayam Rica-Rica", description: "Ayam")
-        @searched_food2 = create(:food, name: "Steak Ayam BBQ", description: "Steak")
-        @searched_food3 = create(:food, name: "Nasi Goreng Ayam", description: "Nasi Goreng")
-      end
-
       it "can be searched by name" do
         get :index, params: { search: { name_like: 'ayam' } }
         expect(assigns(:foods)).to match_array([@searched_food1, @searched_food2, @searched_food3])
@@ -57,6 +52,16 @@ describe FoodsController do
       it "can be searched by description" do
         get :index, params: { search: { description_like: 'ayam' } }
         expect(assigns(:foods)).to match_array([@searched_food1])
+      end
+
+      it "can be searched by minimum_price" do
+        get :index, params: { search: { minimum_price: 20000 } }
+        expect(assigns(:foods)).to match_array([@searched_food2, @searched_food3])
+      end
+
+      it "can be searched by maximum_price" do
+        get :index, params: { search: { maximum_price: 30000 } }
+        expect(assigns(:foods)).to match_array([@food, @searched_food1, @searched_food2])
       end
     end
   end
