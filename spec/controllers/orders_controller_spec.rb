@@ -18,6 +18,53 @@ describe OrdersController do
       get :index
       expect(response).to render_template :index
     end
+
+    describe 'with search parameters' do
+      before :each do
+        food1 = create(:food, price: 10000.0)
+        line_item1 = create(:line_item, quantity: 1, food: food1)
+        @searched_order1 = create(:order, name: "Iqbal", address: "Jatiwaringin", email: "farabi.iqbal@gmail.com", payment_type: "Cash")
+        @searched_order1.line_items << line_item1
+        @searched_order1.save
+        
+        food2 = create(:food, price: 20000.0)
+        line_item2 = create(:line_item, quantity: 1, food: food2)
+        @searched_order2 = create(:order, name: "Farabi", address: "Bekasi", email: "iqbal.farabi@virkea.com", payment_type: "Go Pay")
+        @searched_order2.line_items << line_item2
+        @searched_order2.save
+
+        food3 = create(:food, price: 30000.0)
+        line_item3 = create(:line_item, quantity: 1, food: food3)
+        @searched_order3 = create(:order, name: "Iqbal Farabi", address: "Jawa Barat", email: "iqbal@starqle.com", payment_type: "Credit Card", total_price: 30000)
+        @searched_order3.line_items << line_item3
+        @searched_order3.save
+      end
+
+      it "can be searched by name" do
+        get :index, params: { search: { name_like: 'iqbal' } }
+        expect(assigns(:orders)).to match_array([@searched_order1, @searched_order3])
+      end
+
+      it "can be searched by address" do
+        get :index, params: { search: { address_like: 'bekasi' } }
+        expect(assigns(:orders)).to match_array([@searched_order2])
+      end
+
+      it "can be searched by email" do
+        get :index, params: { search: { email_like: 'farabi' } }
+        expect(assigns(:orders)).to match_array([@searched_order1, @searched_order2])
+      end
+
+      it "can be searched by minimum total price" do
+        get :index, params: { search: { minimum_total_price: 15000 } }
+        expect(assigns(:orders)).to match_array([@searched_order2, @searched_order3])
+      end
+
+      it "can be searched by maximum total price" do
+        get :index, params: { search: { maximum_total_price: 25000 } }
+        expect(assigns(:orders)).to match_array([@searched_order1, @searched_order2])
+      end
+    end
   end
 
   describe 'GET #show' do

@@ -8,7 +8,12 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    if !params[:search].nil?
+      @orders = Order.search(params[:search])
+    else
+      @orders = Order.all
+    end
+    
   end
 
   # GET /orders/1
