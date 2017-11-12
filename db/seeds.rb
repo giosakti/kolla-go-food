@@ -1,3 +1,7 @@
+User.delete_all
+
+user = User.create!(username: 'iqbal', password: 'test1234')
+
 Category.delete_all
 
 category1 = Category.create!(name: 'Main Dish')

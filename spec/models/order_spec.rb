@@ -77,6 +77,7 @@ describe Order do
       end
 
       it "can calculate sub total price" do
+        @order.save
         expect(@order.sub_total_price).to eq(100000)
       end
 
@@ -85,10 +86,12 @@ describe Order do
           voucher = create(:voucher, code: 'VOUCHER2', amount: 5, unit: "percent", max_amount: 10000)
           order = create(:order, voucher: voucher)
           order.add_line_items(@cart)
+          order.save
           expect(order.discount).to eq(5000)
         end
 
         it "changes discount to max_amount if discount is bigger than max_amount" do
+          @order.save
           expect(@order.discount).to eq(10000)
         end
       end
@@ -98,11 +101,13 @@ describe Order do
           voucher = create(:voucher, amount: 5000, unit: "rupiah", max_amount: 10000)
           order = create(:order, voucher: voucher)
           order.add_line_items(@cart)
+          order.save
           expect(order.discount).to eq(5000)
         end
       end
 
       it "can calculate total price" do
+        @order.save
         expect(@order.total_price).to eq(90000)
       end
     end
