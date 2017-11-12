@@ -23,12 +23,16 @@ class Food < ApplicationRecord
   def self.search(params)
     foods = self.all
     
-    foods = foods.where("LOWER(name) LIKE ?", "%#{params[:name_like].downcase}%") if !params[:name_like].empty?
-    foods = foods.where("LOWER(description) LIKE ?", "%#{params[:description_like].downcase}%") if !params[:description_like].empty?
-    foods = foods.where("price >= ?", params[:minimum_price]) if !params[:minimum_price].empty?
-    foods = foods.where("price <= ?", params[:maximum_price]) if !params[:maximum_price].empty?
+    foods = foods.where("LOWER(name) LIKE ?", "%#{params[:name_like].downcase}%") if self.valid_search_params?(params[:name_like])
+    foods = foods.where("LOWER(description) LIKE ?", "%#{params[:description_like].downcase}%") if self.valid_search_params?(params[:description_like])
+    foods = foods.where("price >= ?", params[:minimum_price]) if self.valid_search_params?(params[:minimum_price])
+    foods = foods.where("price <= ?", params[:maximum_price]) if self.valid_search_params?(params[:maximum_price])
 
     foods
+  end
+
+  def self.valid_search_params?(params)
+    params.present? && !params.blank?
   end
 
   private

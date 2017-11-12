@@ -27,6 +27,22 @@ class Order < ApplicationRecord
     end
   end
 
+  def self.search(params)
+    orders = self.all
+    
+    orders = orders.where("LOWER(name) LIKE ?", "%#{params[:name_like].downcase}%") if self.valid_search_params?(params[:name_like])
+    orders = orders.where("LOWER(address) LIKE ?", "%#{params[:address_like].downcase}%") if self.valid_search_params?(params[:address_like])
+    orders = orders.where("LOWER(email) LIKE ?", "%#{params[:email_like].downcase}%") if self.valid_search_params?(params[:email_like])
+    orders = orders.where("total_price >= ?", params[:minimum_total_price]) if self.valid_search_params?(params[:minimum_total_price])
+    orders = orders.where("total_price <= ?", params[:maximum_total_price]) if self.valid_search_params?(params[:maximum_total_price])
+
+    orders
+  end
+
+  def self.valid_search_params?(params)
+    params.present? && !params.blank?
+  end
+
   private
     def calculate_sub_total_price
       sum = 0
