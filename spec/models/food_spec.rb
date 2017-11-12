@@ -87,6 +87,15 @@ describe Food do
     end
   end
 
+  describe "search" do
+    it "can be searched by name" do
+      food1 = create(:food, name: "Ayam Rica-Rica")
+      food2 = create(:food, name: "Steak Ayam BBQ")
+      food3 = create(:food, name: "Nasi Goreng Ayam")
+      expect(Food.search(name_like: "ayam")).to eq([food1, food2, food3])
+    end
+  end
+
   it "can't be destroyed while it has line_item(s)" do
     cart = create(:cart)
     food = create(:food)

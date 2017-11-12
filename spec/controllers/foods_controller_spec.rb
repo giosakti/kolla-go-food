@@ -41,6 +41,16 @@ describe FoodsController do
         expect(response).to render_template :index
       end
     end
+
+    context 'with search parameters' do
+      it "can be searched by name" do
+        food1 = create(:food, name: "Ayam Rica-Rica")
+        food2 = create(:food, name: "Steak Ayam BBQ")
+        food3 = create(:food, name: "Nasi Goreng Ayam")
+        get :index, params: { search: { name_like: 'ayam' } }
+        expect(assigns(:foods)).to match_array([food1, food2, food3])
+      end
+    end
   end
 
   describe 'GET #show' do

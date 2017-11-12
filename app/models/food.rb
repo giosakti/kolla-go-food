@@ -20,6 +20,12 @@ class Food < ApplicationRecord
     where("name LIKE ?", "#{letter}%").order(:name)
   end
 
+  def self.search(params)
+    if params[:name_like]
+      where("LOWER(name) LIKE ?", "%#{params[:name_like].downcase}%")
+    end
+  end
+
   private
     def ensure_not_referenced_by_any_line_item
       unless line_items.empty?

@@ -2,6 +2,13 @@
 
 <h1>Foods</h1>
 
+<%= form_tag(foods_path, method: :get) do %>
+  <%= text_field_tag "search[name_like]" %>
+  <%= submit_tag 'Search' %>
+<% end %>
+
+<br/><br/>
+
 <table>
   <% @foods.each do |food| %>
     <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
