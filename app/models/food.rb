@@ -1,6 +1,6 @@
 class Food < ApplicationRecord
   belongs_to :category
-  belongs_to :restaurant
+  belongs_to :restaurant, counter_cache: true
   has_many :line_items
   has_many :reviews, as: :reviewable
   has_and_belongs_to_many :tags
