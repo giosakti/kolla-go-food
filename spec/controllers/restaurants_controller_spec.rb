@@ -20,6 +20,39 @@ describe RestaurantsController do
       get :index
       expect(response).to render_template :index
     end
+
+    describe 'with search parameters' do
+      before :each do
+        category = create(:category)
+        
+        @searched_restaurant1 = create(:restaurant, name: "Kopi Oei", address: "Sabang")
+        @searched_restaurant1.foods.create(name: "Food 1", description: "Food 1", price: 10000, category_id: category.id)
+        
+        @searched_restaurant2 = create(:restaurant, name: "Anomali Kopi", address: "Setiabudi")
+        @searched_restaurant2.foods.create(name: "Food 2", description: "Food 2", price: 10000, category_id: category.id)
+        @searched_restaurant2.foods.create(name: "Food 3", description: "Food 3", price: 10000, category_id: category.id)
+      end
+
+      it "can be searched by name" do
+        get :index, params: { search: { name_like: 'kopi' } }
+        expect(assigns(:restaurants)).to match_array([@searched_restaurant1, @searched_restaurant2])
+      end
+
+      it "can be searched by address" do
+        get :index, params: { search: { address_like: 'sabang' } }
+        expect(assigns(:restaurants)).to match_array([@searched_restaurant1])
+      end
+
+      it "can be searched by minimum foods count" do
+        get :index, params: { search: { minimum_foods_count: 2 } }
+        expect(assigns(:restaurants)).to match_array([@searched_restaurant2])
+      end
+
+      it "can be searched by maximum foods count" do
+        get :index, params: { search: { maximum_foods_count: 1 } }
+        expect(assigns(:restaurants)).to match_array([@restaurant, @restaurant1, @restaurant2, @searched_restaurant1])
+      end
+    end
   end
 
   describe 'GET #show' do

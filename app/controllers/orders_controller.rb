@@ -13,7 +13,6 @@ class OrdersController < ApplicationController
     else
       @orders = Order.all
     end
-    
   end
 
   # GET /orders/1
