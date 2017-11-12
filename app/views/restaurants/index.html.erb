@@ -2,11 +2,42 @@
 
 <h1>Restaurants</h1>
 
+<%= form_tag(restaurants_path, method: :get) do %>
+  <fieldset>
+    <legend>Search Form</legend>
+    
+    <div>
+      <%= label_tag 'Name:' %>
+      <%= text_field_tag "search[name_like]" %>
+    </div>
+    
+    <div>
+      <%= label_tag 'Address:' %>
+      <%= text_field_tag "search[address_like]" %>
+    </div>
+
+    <div>
+      <%= label_tag 'Minimum Foods Count:' %>
+      <%= text_field_tag "search[minimum_foods_count]" %>
+    </div>
+
+    <div>
+      <%= label_tag 'Maximum Foods Count:' %>
+      <%= text_field_tag "search[maximum_foods_count]" %>
+    </div>
+    
+    <div>
+      <%= submit_tag "Search" %>
+    </div>
+  </fieldset>
+<% end %>
+
 <table>
   <% @restaurants.each do |restaurant| %>
     <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
       <td><%= restaurant.name %></td>
       <td><%= restaurant.address %></td>
+      <td><%= restaurant.foods_count %></td>
       <td class="list_actions">
         <%= link_to 'Show', restaurant %> &nbsp;
         <%= link_to 'Edit', edit_restaurant_path(restaurant) %> &nbsp;
