@@ -21,9 +21,12 @@ class Food < ApplicationRecord
   end
 
   def self.search(params)
-    if params[:name_like]
-      where("LOWER(name) LIKE ?", "%#{params[:name_like].downcase}%")
-    end
+    foods = self.all
+    
+    foods = foods.where("LOWER(name) LIKE ?", "%#{params[:name_like].downcase}%") if params[:name_like]
+    foods = foods.where("LOWER(description) LIKE ?", "%#{params[:description_like].downcase}%") if params[:description_like]
+
+    foods
   end
 
   private

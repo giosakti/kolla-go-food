@@ -42,13 +42,21 @@ describe FoodsController do
       end
     end
 
-    context 'with search parameters' do
+    describe 'with search parameters' do
+      before :each do
+        @searched_food1 = create(:food, name: "Ayam Rica-Rica", description: "Ayam")
+        @searched_food2 = create(:food, name: "Steak Ayam BBQ", description: "Steak")
+        @searched_food3 = create(:food, name: "Nasi Goreng Ayam", description: "Nasi Goreng")
+      end
+
       it "can be searched by name" do
-        food1 = create(:food, name: "Ayam Rica-Rica")
-        food2 = create(:food, name: "Steak Ayam BBQ")
-        food3 = create(:food, name: "Nasi Goreng Ayam")
         get :index, params: { search: { name_like: 'ayam' } }
-        expect(assigns(:foods)).to match_array([food1, food2, food3])
+        expect(assigns(:foods)).to match_array([@searched_food1, @searched_food2, @searched_food3])
+      end
+
+      it "can be searched by description" do
+        get :index, params: { search: { description_like: 'ayam' } }
+        expect(assigns(:foods)).to match_array([@searched_food1])
       end
     end
   end
