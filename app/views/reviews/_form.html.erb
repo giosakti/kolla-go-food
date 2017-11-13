@@ -27,8 +27,8 @@
   </div>
 
   <div class="actions">
-    <%= f.hidden_field :reviewable_id, value: @reviewable.id %>
-    <%= f.hidden_field :reviewable_type, value: @reviewable.class.name %>
+    <%= f.hidden_field :reviewable_id, value: reviewable.id %>
+    <%= f.hidden_field :reviewable_type, value: reviewable.class.name %>
     <%= f.submit %>
   </div>
 <% end %>
