@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'admin' => 'admin#index'
+  get 'dashboard' => 'dashboard#index'
   get 'home/hello'
   resources :categories
   resources :carts

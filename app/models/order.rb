@@ -20,6 +20,9 @@ class Order < ApplicationRecord
   validates :payment_type, inclusion: payment_types.keys
   validates_with VoucherValidator
 
+  scope :grouped_by_date, -> { group("strftime('%Y-%m-%d', orders.created_at)").count }
+  scope :grouped_by_total_price_per_date, -> { group("strftime('%Y-%m-%d', orders.created_at)").sum(:total_price) }
+
   def add_line_items(cart)
     cart.line_items.each do |item|
       item.cart_id = nil

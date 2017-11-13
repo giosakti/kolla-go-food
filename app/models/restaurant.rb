@@ -3,6 +3,9 @@ class Restaurant < ApplicationRecord
   has_many :reviews, as: :reviewable
   validates :name, presence: true, uniqueness: true
 
+  scope :grouped_by_order, -> { joins(foods: { line_items: :order }).group("restaurants.name").count }
+  scope :grouped_by_total_price, -> { joins(foods: { line_items: :order }).group("restaurants.name").sum("orders.total_price") }
+
   def self.search(params)
     restaurants = self.all
     
