@@ -24,4 +24,10 @@ Rails.application.routes.draw do
   resources :tags
   resources :users
   resources :vouchers
+
+  namespace :api, defaults: {format: 'json'} do
+    namespace :v1 do
+      resources :foods
+    end
+  end
 end
